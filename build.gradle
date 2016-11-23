@@ -1,10 +1,7 @@
 apply plugin: 'java'
-apply plugin: "groovy"
+apply plugin: 'groovy'
 
-jar {
-	baseName = 'triangles-app'
-	version = '1.0.0-SNAPSHOT'
-}
+defaultTasks 'fatJar'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -15,7 +12,17 @@ repositories {
 
 dependencies {
 	compile 'commons-cli:commons-cli:1.3.1'
+	compile 'org.codehaus.groovy:groovy-all:2.4.1'
+	
+	testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
 
-	compile "org.codehaus.groovy:groovy-all:2.4.1"
-	testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+task fatJar(type: Jar) {
+    with jar
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+        attributes 'Main-Class': 'com.luis.triangles.TrianglesApp',
+                   'Implementation-Title': 'Triangles app',
+                   'Implementation-Version': version              
+    }
 }
