@@ -1,7 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
+apply plugin: "jacoco"
 
-defaultTasks 'fatJar'
+defaultTasks 'test', 'jacocoTestReport', 'fatJar'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -24,5 +25,13 @@ task fatJar(type: Jar) {
         attributes 'Main-Class': 'com.luis.triangles.TrianglesApp',
                    'Implementation-Title': 'Triangles app',
                    'Implementation-Version': version              
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
     }
 }
