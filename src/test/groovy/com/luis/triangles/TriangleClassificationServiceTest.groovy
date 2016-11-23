@@ -4,24 +4,24 @@ import static com.luis.triangles.domain.TriangleType.*;
 
 import spock.lang.*
 
-import com.luis.triangles.services.TriangleService
+import com.luis.triangles.services.TriangleClassificationService
 import com.luis.triangles.domain.Triangle
 import com.luis.triangles.domain.TriangleType
 import com.luis.triangles.exceptions.TriangleNotValidException
 
-class TriangleServiceTest extends Specification {
+class TriangleClassificationServiceTest extends Specification {
 
-    TriangleService triangleService;
+    TriangleClassificationService triangleService;
 
     def setup() {
-        triangleService = new TriangleService()
+        triangleService = new TriangleClassificationService()
     }
       
     @Unroll
     def "Test triangle classification {#side1,#side2,#side3} - #expectedResult"() {
         when:
         Triangle triangle = new Triangle(side1, side2, side3);
-        TriangleType triangleType = triangleService.classify(triangle)
+        TriangleType triangleType = triangleService.classifyBySideLength(triangle)
         
         then:
         triangleType == expectedResult
@@ -50,7 +50,7 @@ class TriangleServiceTest extends Specification {
     def "Test triangle classification throws exception on invalid input {#side1,#side2,#side3}"() {
         when:
         Triangle triangle = new Triangle(side1, side2, side3);
-        TriangleType triangleType = triangleService.classify(triangle)
+        TriangleType triangleType = triangleService.classifyBySideLength(triangle)
         
         then:
         thrown(TriangleNotValidException)
